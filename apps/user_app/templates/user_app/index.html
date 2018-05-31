@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Private Messages</title>
+</head>
+<body>
+    <h1>Welcome to Message Me</h1>
+    <h2>A Private Messaging App</h2>
+    <h3> User Registration</h3>
+    
+    <form action="/user_register" method="POST">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username"><br>
+        <input type="text" name="email" placeholder="Email Address"><br>
+        <input type="password" name="password" placeholder="Password"><br>
+        <input type="password" name="confirm_password" placeholder="Confirm Password"><br>
+        <input type="submit" value="Register">
+    </form>
+
+    <h3> User Login</h3>
+    
+    <form action="/user_login" method="POST">
+        {% csrf_token %}
+        <input type="text" name="email" placeholder="Email Address"><br>
+        <input type="password" name="password" placeholder="Password"><br>
+        <input type="submit" value="Login">
+    </form>
+
+    <div class="col-sm-12">
+        {% if messages %}
+        <br>
+        {% for message in messages %}
+        <div class="alert alert-danger alert dismissable">
+            <a href='' class="close" data-dismiss='alert' aria-label='close'>x</a>
+            {{message}}
+        </div>
+        {% endfor %}
+    {% endif %}
+    </div>
+
+</body>
+</html>

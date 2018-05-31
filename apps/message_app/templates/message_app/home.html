@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Private Messages</title>
+</head>
+<body>
+    <H1>Welcome Back {{ request.session.username }}</H1>
+    
+<a href="/logout">Logout</a>
+
+    <h3>Received Messages</h3>
+    <table border=1>
+        <tr>
+            <th>Sent:</th>
+            <th>Message:</th>
+            <th>Sent on:</th>
+        </tr>
+        {% for msg in user.to_user.all reversed %} <!–– Reversed  displays newer messages first-->
+        <tr>
+            <td><a href="/chat/{{msg.user_from_id}}">{{ msg.user_from.username }}</a></td>
+            <td>{{ msg.message }}</td>
+            <td>{{ msg.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Sent Messages</h3>
+    <table border=1>
+        <tr>
+            <th>To:</th>
+            <th>Message:</th>
+            <th>Sent on:</th>
+        </tr>
+        {% for msg in user.from_user.all reversed %}
+        <tr>
+            <td><a href="/chat/{{msg.user_to_id}}">{{ msg.user_to.username }}</a></td>
+            <td>{{ msg.message }}</td>
+            <td>{{ msg.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>New Message</h3>
+    <form action="/send" method="POST">
+        {% csrf_token %}
+        <textarea name="message" placeholder="Your message..."></textarea><br>
+        <select name="user_to">
+            {% for user in users %}
+                <option value="{{user.id}}">To:  {{user.username}} </options>
+            {% endfor %}
+        </select><br>
+        <input type="submit" value="Send Message">
+    </form>
+</body>
+</html>

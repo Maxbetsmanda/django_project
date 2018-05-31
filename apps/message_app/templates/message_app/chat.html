@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Private Messages</title>
+</head>
+<body>
+    <h1>Chat History</h1>
+    
+    <ol>
+    {% for msg in conversation %}
+        {% if msg.user_from_id == request.session.user_id %}
+            <li><strong>You said:</strong> {{msg.message}} ({{msg.created_at}})</li>
+        {% else %}
+            <li><strong> {{msg.user_from.username}} said:</strong> {{msg.message}} ({{msg.created_at}})</li>
+        {% endif %}
+    {% endfor %}
+    </ol>
+
+    <form action="/chat/{{user_id}}" method="POST">
+        {% csrf_token %}
+        <textarea name="message" placeholder="Your reply ..."></textarea><br>
+        <input type="submit" value="Reply">
+    
+
+    </form>
+</body>
+</html>
